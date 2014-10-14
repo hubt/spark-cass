@@ -71,6 +71,7 @@ I could build separate cassandra and spark containers.
 
 `sbt assembly` builds an uber jar with all dependencies, this is slow but reduces dependency issues.
 
+I could flatten out the docker layers
 
 
 
