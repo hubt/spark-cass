@@ -23,7 +23,7 @@ You can download the image `docker pull hubt/spark-cass`
 # Using the interactive shell:
 For simple interactive use, there's a shell script /root/spark-cass which just calls spark-shell with the extra jar files for cassandra added
 ```
-host# docker run -t -i spark-cass-image
+host# docker run -t -i hubt/spark-cass
 root@docker# ./spark-cass
 ... # lots of spark startup messages
 scala>   import com.datastax.spark.connector._;
@@ -55,7 +55,7 @@ spark-submit --class Trigram /root/trigram/target/scala-2.10/trigram-spark-cass-
 
 # Building the docker image
 
-If you want to rebuild the docker image, a simple `docker build -t spark-cass-image.` should work. 
+If you want to rebuild the docker image, a simple `docker build <dir>` should work. 
 
 More info:
 The docker command starts up a cassandra service, Spark uses a local cluster connected to a local cassandra cluster via 127.0.0.1
