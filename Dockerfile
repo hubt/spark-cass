@@ -24,7 +24,7 @@ RUN wget http://debian.datastax.com/community/pool/cassandra_2.0.10_all.deb ; dp
 
 # install and build spark-cassandra connector
 RUN curl -L -s https://github.com/datastax/spark-cassandra-connector/archive/v1.1.0-alpha2.tar.gz | tar -zx ; ln -s spark-cassandra-connector-1.1.0-alpha2/ spark-cassandra-connector
-RUN cd spark-cassandra-connector ; sbt/sbt package
+RUN cd spark-cassandra-connector ; sbt/sbt assembly || true
 
 # java-driver-2.1.1 didn't work, so I use 2.1.0
 RUN curl -L http://downloads.datastax.com/java-driver/cassandra-java-driver-2.1.0.tar.gz | tar -zx ; ln -s cassandra-java-driver-2.1.0 cassandra-java-driver
@@ -33,7 +33,9 @@ RUN curl -L http://downloads.datastax.com/java-driver/cassandra-java-driver-2.1.
 RUN curl -L -s https://dl.bintray.com/sbt/native-packages/sbt/0.13.6/sbt-0.13.6.tgz | tar -zx 
 
 # cassandra host defaults to the real ip so we change it to localhost 
-RUN echo "spark.cassandra.connection.host 127.0.0.1" >> /usr/local/spark/conf/spark-defaults.conf
+RUN echo spark.cassandra.connection.host 127.0.0.1 >> /usr/local/spark/conf/spark-defaults.conf
+RUN echo spark.executor.extraClassPath /usr/local/spark-cassandra-connector-1.1.0-alpha2/spark-cassandra-connector-java/target/scala-2.10/spark-cassandra-connector-java-assembly-1.1.0-alpha2.jar >> /usr/local/spark/conf/spark-defaults.conf
+RUN echo spark.driver.extraClassPath /usr/local/spark-cassandra-connector-1.1.0-alpha2/spark-cassandra-connector-java/target/scala-2.10/spark-cassandra-connector-java-assembly-1.1.0-alpha2.jar >> /usr/local/spark/conf/spark-defaults.conf
 
 # cassandra service warns trying to set ulimits in a container, so disable ulimit commands
 RUN perl -pi.bak -e 's/ulimit/#ulimit/g' /etc/init.d/cassandra 
