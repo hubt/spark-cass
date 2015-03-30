@@ -34,8 +34,9 @@ scala>   table.count
 # or us SchemaRDD
 scala>   import org.apache.spark.sql.cassandra.CassandraSQLContext;
 scala>   val cc = new CassandraSQLContext(sc)
+scala>   import org.apache.spark.sql.SchemaRDD;
 scala>   val rdd: SchemaRDD = cc.sql("SELECT * from testkeyspace.trigram limit 10")
-scala>   a.foreach(println)
+scala>   rdd.foreach(println)
 ```
 
 # Using the Trigram sbt project:
